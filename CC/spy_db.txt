@@ -1,0 +1,5 @@
+Format : Mot Normal--Mot d'Epsion
+Porc--Boeuf
+Tigre--Lion
+Frère--Copain
+Professeur--Patron
