@@ -84,7 +84,7 @@ async def spy(ctx,num: int):
     else:
         await ctx.send(f'Les joueurs tapent "1" ici, svp !');players=[]
         msg=ctx.message;conn=1;t=time.time()
-        while time.time()-t<=15 and conn!=0 : 
+        while time.time()-t<=5 and conn!=0 : 
             async for message in ctx.channel.history(limit=10,after=msg):
                 print(message.content)
                 if "1" in message.content and message.author not in players and message.author!=bot.user:
@@ -114,7 +114,7 @@ async def dsv(ctx, num: str):
     else:
         await ctx.send(f'Les joueurs tapent "1" ici, svp !');players=[]
         msg=ctx.message;conn=1;t=time.time()
-        while time.time()-t<=15 and conn!=0 : 
+        while time.time()-t<=5 and conn!=0 : 
             async for message in ctx.channel.history(limit=10,after=msg):
                 print(message.content)
                 if "1" in message.content and message.author not in players and message.author!=bot.user:
@@ -126,8 +126,9 @@ async def dsv(ctx, num: str):
             await ctx.send('Coucou ! Il faut au moins 2 joueurs.')
         else:
             n_id=random.sample(range(0,len(dsv_db)),len(players));names=[]
-            for i in range(len(players)):
+            async for i in range(len(players)):
                 await players[i].send(f'Coucou ! Votre mot: {dsv_db[n_id[i]]}')
+                await players[i].send(f"Vous pouvez utiliser cette lien :　https://r7.whiteboardfox.com/")
                 names.append(players[i].name)
             if len(names)==int(num):
                 await ctx.send(f'Coucou ! {names}, vous pourrez commencer votre jeu !')
