@@ -1,0 +1,8 @@
+# pip下载
+pip install pypinyin
+pip install discord
+pip install googletrans==4.0.0-rc1
+# conda下载
+conda install pypinyin
+conda install discord
+conda install googletrans==4.0.0-rc1
