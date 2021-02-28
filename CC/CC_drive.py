@@ -45,7 +45,8 @@ async def on_ready():
     print('------')
 
 @bot.command()
-async def translate(ctx, phrase:str):
+async def translate(ctx, *phrase):
+    phrase=' '.join([*phrase])
     d=1
     for w in phrase[:3]:
         if ord(w)>11903 and w not in "，！？：“”【】":
@@ -66,11 +67,16 @@ async def translate(ctx, phrase:str):
         await ctx.send('%s\n%s\n\n' % (_new_line,_trans))
 
 @bot.command()
-async def salut(ctx):
+async def rules(ctx, *para):
+    await ctx.send('Règlements : https://docs.google.com/document/d/1OG6zNvzq_hxXZJT3CkmKmE7j3MM5J5UbhEjsohr9NrQ/edit?usp=sharing')
+
+@bot.command()
+async def salut(ctx, *para):
     await ctx.send(f"^w^ Salut, {ctx.author.name} ! Voici CC. Enchantée !")
 
 @bot.command()
-async def CC(ctx,chat: str):
+async def CC(ctx,*chat):
+    chat = ' '.join([*chat])
     try:
         response=chat_db[re.sub("[,./;'\[\]!@#$%^&*()_+|}{\":<>?\\，。、；‘【】、“：”《》？—！@￥…（）]","",chat).lower()]
         await ctx.send(response)
@@ -78,7 +84,7 @@ async def CC(ctx,chat: str):
         await ctx.send("Pardon, CC est en train d'apprendre comment parler. Je ne comprends pas encore ce que vous disez !")
         
 @bot.command()
-async def spy(ctx,num: int):
+async def spy(ctx,num: int,*para):
     if int(num)<=2:
         await ctx.send('Coucou ! Il faut au moins 3 joueurs.')
     else:
@@ -108,7 +114,7 @@ async def spy(ctx,num: int):
                 await ctx.send(f'Est-ce que vous vous trompez de nombre ? Si oui, {names}, vous pourrez commencer votre jeu ! Sinon, retypez "$spy num_players", svp !')
             
 @bot.command()
-async def dsv(ctx, num: str):
+async def dsv(ctx, num: str,*para):
     if int(num)<=1:
         await ctx.send('Coucou ! Il faut au moins 2 joueurs.')
     else:
@@ -136,13 +142,13 @@ async def dsv(ctx, num: str):
                 await ctx.send(f'Est-ce que vous vous trompez de nombre ? Si oui, {names}, vous pourrez commencer votre jeu ! Sinon, retypez "$dsv num_players", svp !')
 
 @bot.command()
-async def id(ctx):
+async def id(ctx,*para):
     user=ctx.author
     print(type(user))
     await user.send(f"Coucou ! Votre ID est : {ctx.author.id}")
 
 @bot.command()
-async def info(ctx):
+async def info(ctx,*para):
     embed = discord.Embed(title="CC", description=description, color=0xeee657)
     embed.add_field(name="Parent", value="Club Chine Centrale Lyon")
     embed.add_field(name="Date de Naissance", value="21/02/2021", inline=False)
@@ -154,8 +160,9 @@ async def info(ctx):
 
 bot.remove_command('help')
 @bot.command()
-async def help(ctx):
+async def help(ctx,*para):
     embed = discord.Embed(title="CC", description=description, color=0xeee657)
+    embed.add_field(name="$rule", value="Connaître les règlements de jeux disponibles", inline=False)
     embed.add_field(name="$spy num_players", value="Commencez un jeu de Mot-Espion(num_players=nombre de joueurs)", inline=False)
     embed.add_field(name="$dsv num_players", value="Commencez un jeu de Dessiner-Deviner(num_players=nombre de joueurs)", inline=False)
     embed.add_field(name="$translate phrase", value="Translatez une phrase entre la langue chinoise et la langue française", inline=False)
