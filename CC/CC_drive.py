@@ -67,7 +67,7 @@ async def translate(ctx, *phrase):
         await ctx.send('%s\n%s\n\n' % (_new_line,_trans))
 
 @bot.command()
-async def rules(ctx, *para):
+async def rule(ctx, *para):
     await ctx.send('Règlements : https://docs.google.com/document/d/1OG6zNvzq_hxXZJT3CkmKmE7j3MM5J5UbhEjsohr9NrQ/edit?usp=sharing')
 
 @bot.command()
@@ -92,7 +92,6 @@ async def spy(ctx,num: int,*para):
         msg=ctx.message;conn=1;t=time.time()
         while time.time()-t<=5 and conn!=0 : 
             async for message in ctx.channel.history(limit=10,after=msg):
-                print(message.content)
                 if "1" in message.content and message.author not in players and message.author!=bot.user:
                     players.append(message.author)
                 msg=message
@@ -122,7 +121,6 @@ async def dsv(ctx, num: str,*para):
         msg=ctx.message;conn=1;t=time.time()
         while time.time()-t<=5 and conn!=0 : 
             async for message in ctx.channel.history(limit=10,after=msg):
-                print(message.content)
                 if "1" in message.content and message.author not in players and message.author!=bot.user:
                     players.append(message.author)
                 msg=message
@@ -144,7 +142,6 @@ async def dsv(ctx, num: str,*para):
 @bot.command()
 async def id(ctx,*para):
     user=ctx.author
-    print(type(user))
     await user.send(f"Coucou ! Votre ID est : {ctx.author.id}")
 
 @bot.command()
