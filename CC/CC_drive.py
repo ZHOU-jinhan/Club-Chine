@@ -10,6 +10,7 @@ try:
 except:
     translator = Translator(service_urls=['translate.google.cn',])
 
+t_jeu = 20
 description = "Bot de ClubChineCentraleLyon"
 bot = commands.Bot(command_prefix='$', description=description)
 
@@ -49,7 +50,7 @@ async def translate(ctx, *phrase):
     phrase=' '.join([*phrase])
     d=1
     for w in phrase[:3]:
-        if ord(w)>11903 and w not in "，！？：“”【】":
+        if ord(w)>11903 and w not in "，！？：‘’“”【】":
             d=0;break
     if d:
         src_="fr";dest_="zh-cn"
@@ -78,66 +79,72 @@ async def salut(ctx, *para):
 async def CC(ctx,*chat):
     chat = ' '.join([*chat])
     try:
-        response=chat_db[re.sub("[,./;'\[\]!@#$%^&*()_+|}{\":<>?\\，。、；‘【】、“：”《》？—！@￥…（）]","",chat).lower()]
+        response=chat_db[re.sub("[,./;'\[\]!@#$%^&*()_+|}{\":<>?\\，。、；‘’【】、“：”《》？—！@￥…（）]","",chat).lower()]
         await ctx.send(response)
     except:
         await ctx.send("Pardon, CC est en train d'apprendre comment parler. Je ne comprends pas encore ce que vous disez !")
         
 @bot.command()
 async def spy(ctx,num: int,*para):
-    if int(num)<=2:
-        await ctx.send('Coucou ! Il faut au moins 3 joueurs.')
+    if int(ctx.channel.id) != 811359562933338142:
+        await ctx.send('Pardon, cette commande ne peut fonctionner que dans le channel [游戏室-JEUX].')
     else:
-        await ctx.send(f'Les joueurs tapent "1" ici, svp !');players=[]
-        msg=ctx.message;conn=1;t=time.time()
-        while time.time()-t<=5 and conn!=0 : 
-            async for message in ctx.channel.history(limit=10,after=msg):
-                if "1" in message.content and message.author not in players and message.author!=bot.user:
-                    players.append(message.author)
-                msg=message
-                if len(players)==int(num):
-                    conn=0;break
-        if len(players)<=2:
+        if int(num)<=2:
             await ctx.send('Coucou ! Il faut au moins 3 joueurs.')
         else:
-            mots=spy_db[random.randint(0,len(spy_db)-1)].split("--");
-            mot=mots[0];mot_spy=mots[1]
-            mots=[mot]*(len(players)-1)+[mot_spy]
-            random.shuffle(mots);names=[]
-            for i in range(len(players)):
-                await players[i].send(f'Coucou ! Votre mot: {mots[i]}')
-                names.append(players[i].name)
-            if len(names)==int(num):
-                await ctx.send(f'Coucou ! {names}, vous pourrez commencer votre jeu !')
+            await ctx.send(f'Les joueurs tapent "1" ici, svp !');players=[]
+            msg=ctx.message;conn=1;t=time.time()
+            while time.time()-t<=t_jeu and conn!=0 : 
+                async for message in ctx.channel.history(limit=10,after=msg):
+                    if "1" in message.content and message.author not in players and message.author!=bot.user:
+                        players.append(message.author)
+                    msg=message
+                    if len(players)==int(num):
+                        conn=0;break
+            if len(players)<=2:
+                await ctx.send('Coucou ! Il faut au moins 3 joueurs.')
             else:
-                await ctx.send(f'Est-ce que vous vous trompez de nombre ? Si oui, {names}, vous pourrez commencer votre jeu ! Sinon, retypez "$spy num_players", svp !')
-            
+                mots=spy_db[random.randint(0,len(spy_db)-1)].split("--");
+                random.shuffle(mots);mot=mots[0];mot_spy=mots[1]
+                mots=[mot]*(len(players)-1)+[mot_spy]
+                random.shuffle(mots);names=[]
+                for i in range(len(players)):
+                    await players[i].send(f'Coucou ! Votre mot: {mots[i]}')
+                    names.append(players[i].name)
+                if len(names)==int(num):
+                    await ctx.send(f'Coucou ! {names}, vous pourrez commencer votre jeu !')
+                else:
+                    await ctx.send(f'Est-ce que vous vous trompez de nombre ? Si oui, {names}, vous pourrez commencer votre jeu ! Sinon, retypez "$spy num_players", svp !')
+                
 @bot.command()
 async def dsv(ctx, num: str,*para):
-    if int(num)<=1:
-        await ctx.send('Coucou ! Il faut au moins 2 joueurs.')
+    if int(ctx.channel.id) != 811359562933338142:
+        await ctx.send('Pardon, cette commande ne peut fonctionner que dans le channel [游戏室-JEUX].')
     else:
-        await ctx.send(f'Les joueurs tapent "1" ici, svp !');players=[]
-        msg=ctx.message;conn=1;t=time.time()
-        while time.time()-t<=5 and conn!=0 : 
-            async for message in ctx.channel.history(limit=10,after=msg):
-                if "1" in message.content and message.author not in players and message.author!=bot.user:
-                    players.append(message.author)
-                msg=message
-                if len(players)==int(num):
-                    conn=0;break
-        if len(players)<=1:
+        if int(num)<=1:
             await ctx.send('Coucou ! Il faut au moins 2 joueurs.')
         else:
-            n_id=random.sample(range(0,len(dsv_db)),len(players));names=[]
-            async for i in range(len(players)):
-                await players[i].send(f'Coucou ! Votre mot: {dsv_db[n_id[i]]}')
-                await players[i].send(f"Vous pouvez utiliser cette lien :　https://r7.whiteboardfox.com/")
-                names.append(players[i].name)
-            if len(names)==int(num):
-                await ctx.send(f'Coucou ! {names}, vous pourrez commencer votre jeu !')
+            await ctx.send(f'Les joueurs tapent "1" ici, svp !');players=[]
+            msg=ctx.message;conn=1;t=time.time()
+            while time.time()-t<=t_jeu and conn!=0 : 
+                async for message in ctx.channel.history(limit=10,after=msg):
+                    if "1" in message.content and message.author not in players and message.author!=bot.user:
+                        players.append(message.author)
+                    msg=message
+                    if len(players)==int(num):
+                        conn=0;break
+            if len(players)<=1:
+                await ctx.send('Coucou ! Il faut au moins 2 joueurs.')
             else:
-                await ctx.send(f'Est-ce que vous vous trompez de nombre ? Si oui, {names}, vous pourrez commencer votre jeu ! Sinon, retypez "$dsv num_players", svp !')
+                n_id=random.sample(range(0,len(dsv_db)),len(players));names=[]
+                async for i in range(len(players)):
+                    await players[i].send(f'Coucou ! Votre mot: {dsv_db[n_id[i]]}')
+                    await players[i].send(f"Vous pouvez utiliser cette lien :　https://r7.whiteboardfox.com/")
+                    names.append(players[i].name)
+                if len(names)==int(num):
+                    await ctx.send(f'Coucou ! {names}, vous pourrez commencer votre jeu !')
+                else:
+                    await ctx.send(f'Est-ce que vous vous trompez de nombre ? Si oui, {names}, vous pourrez commencer votre jeu ! Sinon, retypez "$dsv num_players", svp !')
 
 @bot.command()
 async def id(ctx,*para):
